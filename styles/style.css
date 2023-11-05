@@ -1,7 +1,70 @@
-.ags-window {
-    border-radius: 6px;
+/* Control Center */
+
+.control-center-window {
+    background-color: #1e1e2e;
+    border-radius: 10px;    
 }
 
-.ags-control-center-box {
-    padding: 20px;
+.control-center-box {
+    padding: 10px;
+}
+
+
+/* Topbar */
+.topbar-window {
+    background-color: rgba(30, 30, 46, 0.6);
+    background-size: cover;
+    /* backdrop-filter: blur(5px); */
+}
+
+.window-name {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.topbar-box {
+    /* Top Right Bottom Left */
+    padding: 6px 10px 3px 10px;
+    /* padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 3px;
+    padding-top: 4px; */
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.topbar-control-buttons-toggler {
+    border-radius: 6px;
+    background-color: transparent; 
+}
+
+.topbar-control-buttons-toggler:hover {
+    background-color: rgba(30, 30, 46, 0.6)
+}
+
+.topbar-workspace-button {
+    border-radius: 6px;
+    background-color: transparent; 
+    transition: all 0.5s;
+}
+
+.topbar-workspace-button:hover {
+    background-color: rgba(30, 30, 46, 0.6);
+}
+
+.music-ctl {
+    border-radius: 6px;
+
+    background: linear-gradient(to bottom right, #1871E5,#014CFF);
+    transition: all 0.5s;
+}
+
+.music-ctl:hover {
+    background: linear-gradient(to bottom right, #014CFF,#1871E5);
+}
+
+.music-ctl-label {
+    font-size: smaller;
 }
