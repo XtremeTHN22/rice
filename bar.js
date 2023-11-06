@@ -1,13 +1,7 @@
-import { Widget } from 'resource:///com/github/Aylur/ags/widget.js';
-import { App } from 'resource:///com/github/Aylur/ags/app.js';
-import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
-import Mpris from 'resource:///com/github/Aylur/ags/service/mpris.js';
+import { Widget, App, Hyprland } from "./imports.js";
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
-
-import { Separator, toggleWindow } from './utilities.js';
-
-imports.gi.versions.Gtk = "4.0";
-const { Gtk } = imports.gi;
+import * as Misc from './misc.js';
+import { MusicStatus /*,MusicCtl*/ } from './lib/music_ctl.js';
 
 // ALL CLASSNAMES
 // topbar-left-widgets
@@ -22,58 +16,6 @@ const { Gtk } = imports.gi;
 //         ['visible', Hyprland.active.client, 'address', addr => !!addr],
 //     ],
 // });
-
-function truncateTitle(str) {
-    let lastDash = -1;
-    let found = -1; // 0: em dash, 1: en dash, 2: minus, 3: vertical bar, 4: middle dot
-    for (let i = str.length - 1; i >= 0; i--) {
-        if (str[i] === '—') {
-            found = 0;
-            lastDash = i;
-        }
-        else if (str[i] === '–' && found < 1) {
-            found = 1;
-            lastDash = i;
-        }
-        else if (str[i] === '-' && found < 2) {
-            found = 2;
-            lastDash = i;
-        }
-        else if (str[i] === '|' && found < 3) {
-            found = 3;
-            lastDash = i;
-        }
-        else if (str[i] === '·' && found < 4) {
-            found = 4;
-            lastDash = i;
-        }
-    }
-    if (lastDash === -1) return str;
-    return str.substring(0, lastDash);
-}
-
-const truncateWindowName = (str, len) => {
-    if (str.length > len)
-        return str.substring(0, len) + '...';
-    else
-        return str
-}
-
-const truncateMusicName = (str, max_length_left, max_length_right) => {
-    print(str)
-    let nose = truncateTitle(str).split('-').map(str => str.trim());
-    if (nose[1] || nose[2] === undefined)
-        return nose.join(' ');
-    if (nose.length === 1)
-        return "Play some music!"
-    if (nose[1].length > max_length_left)
-        nose[1] = nose[1].substring(0, max_length_left) + '...';
-    
-    if (nose[2].length > max_length_right)
-        print("if reached")
-        nose[2] = nose[2].substring(0, max_length_right) + '...';
-    return nose.join(' - ');
-}
 
 const Logo = () => {
     return Widget.Icon({
@@ -91,9 +33,7 @@ const WindowName = () => {
     // })
 
     // From: https://github.com/end-4/dots-hyprland/blob/illogical-impulse/.config/ags/windows/bar/leftspace.js
-    return Widget.Scrollable({
-        hscroll: 'never', vscroll: 'never',
-        child: Widget.Box({
+    return Widget.Box({
             vertical: true,
             children: [
                 Widget.Label({
@@ -108,63 +48,57 @@ const WindowName = () => {
                     className: 'window-name',
                     connections: [
                         [Hyprland, label => { // Hyprland.active.client
-                            label.label = truncateWindowName(Hyprland.active.client._title.length === 0 ? `Workspace ${Hyprland.active.workspace.id}` : truncateTitle(Hyprland.active.client._title), 26)
+                            label.label = Misc.truncateWindowName(Hyprland.active.client._title.length === 0 ? `Workspace ${Hyprland.active.workspace.id}` : Misc.truncateTitle(Hyprland.active.client._title), 26)
                         }]
                     ],
                 })
             ]
         })
-    })
-
 }
 
 const dispatch = ws => Utils.execAsync(`hyprctl dispatch workspace ${ws}`);
 
 const Workspaces = () => Widget.EventBox({
+    className: 'topbar-workspaces-box',
     onScrollUp: () => dispatch('+1'),
     onScrollDown: () => dispatch('-1'),
     child: Widget.Box({
         className: 'topbar-workspaces',
+        spacing: 3,
         children: Array.from({ length: 10 }, (_, i) => i + 1).map(i => Widget.Button({
+            halign: 'fill',
             className: 'topbar-workspace-button',
             setup: btn => btn.id = i,
-            label: `${i}`,
+            child: Widget.Box({className: 'btt-circle',}),
             onClicked: () => dispatch(i),
         })),
 
-        // remove this connection if you want fixed number of buttons
+        // connections: [[Hyprland, btn => {
+        //     const { workspaces, active } = Hyprland;
+        //     const occupied = workspaces.has(i) && workspaces.get(i).windows > 0;
+        //     btn.toggleClassName('active', active.workspace.id === i);
+        //     btn.toggleClassName('occupied', occupied);
+        //     btn.toggleClassName('empty', !occupied);
+        // }]],
+
         connections: [[Hyprland, box => box.children.forEach(btn => {
-            btn.visible = Hyprland.workspaces.some(ws => ws.id === btn.id);
+            const workspaces = Hyprland.workspaces;
+            const current_ws = Hyprland.active.workspace.id;
+            btn.visible = workspaces.some(ws => ws.id === btn.id);
+            btn.child.toggleClassName('active', current_ws === btn.id);
         })]],
     }),
 });
 
-const MusicCtl = () => {
-    return Widget.EventBox({
-        className: 'music-ctl',
-        onPrimaryClick: () => Mpris.players[0]?.playPause(),
-        child: Widget.Label({className: 'music-ctl-label',}),
-        visible: false,
-        connections: [[Mpris, self => {
-            const player = Mpris.players[0];
-            self.visible = player;
-            print(player)
-            if (!player)
-                return;
-    
-            const { trackArtists, trackTitle } = player;
-            self.child.label = `  ${truncateMusicName(`${trackArtists.join(', ')} - ${trackTitle}`, 15, 15)}  `
-        }]],
-    });
-}
+
 
 const Clock = () => {
-    return Widget.Button({
+    return Widget.Box({
         className: 'clock',
-        child: Widget.Label(""),
+        children: [Widget.Label("")],
         connections: [[5000, self => {
             Utils.execAsync([`date`, "+%D, %I:%M"]).then(dateString => {
-                self.child.label = dateString;
+                self.children[0].label = dateString;
             }).catch(print);
         }]],
     })
@@ -186,7 +120,7 @@ const CenterWidgets = () => {
         className: 'topbar-center-widgets',
         spacing: 10,
         children: [
-            MusicCtl(),
+            MusicStatus(),
         ]
     })
 }
@@ -197,12 +131,12 @@ const RightWidgets = () => {
         hexpand: true,
         spacing: 10,
         children: [
-            Separator(),
+            Misc.Separator(),
             Clock(),
             Widget.Button({
                 className: "topbar-control-buttons-toggler",
                 onPrimaryClickRelease: () => {
-                    toggleWindow("ctl_center")
+                    Misc.toggleWindow("ctl_center")
                 },
                 child: Widget.Box({
                     spacing: 10,

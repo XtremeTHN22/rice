@@ -9,11 +9,13 @@
     padding: 10px;
 }
 
+/* End of Control Center */
 
 /* Topbar */
 .topbar-window {
     background-color: rgba(30, 30, 46, 0.6);
     background-size: cover;
+    border-radius: 10px;
     /* backdrop-filter: blur(5px); */
 }
 
@@ -24,7 +26,7 @@
 
 .topbar-box {
     /* Top Right Bottom Left */
-    padding: 6px 10px 3px 10px;
+    padding: 6px 10px 6px 10px;
     /* padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 3px;
@@ -44,27 +46,77 @@
     background-color: rgba(30, 30, 46, 0.6)
 }
 
+/* Workspace */
+
+.topbar-workspaces-box {
+    background-color: rgba(30, 30, 46, 0.6);
+    border-radius: 10px;
+}
+
 .topbar-workspace-button {
-    border-radius: 6px;
+    border-radius: 10px;
     background-color: transparent; 
     transition: all 0.5s;
 }
 
 .topbar-workspace-button:hover {
-    background-color: rgba(30, 30, 46, 0.6);
+    background-color: rgba(24, 113, 229, 0.3);
 }
 
-.music-ctl {
+.btt-circle {
+    background-color: #eff1f5;
+    /* Top Right Bottom Left */
+    margin: 5px 1px 5px 1px;
+    border-radius: 10px;
+    transition: background-color 0.4s;
+}
+
+.btt-circle.active {
+    background-color: rgba(24, 113, 229, 0.6);
+}
+
+/* End of workspace */
+
+
+
+/* Music Controller */
+.music-status {
     border-radius: 6px;
 
     background: linear-gradient(to bottom right, #1871E5,#014CFF);
     transition: all 0.5s;
 }
 
-.music-ctl:hover {
-    background: linear-gradient(to bottom right, #014CFF,#1871E5);
+.music-status:hover {
+    background: linear-gradient(to bottom right, #1c1c46,#5b2755);
 }
 
-.music-ctl-label {
+.music-status-label {
     font-size: smaller;
 }
+
+.music-ctl-window {
+    background-color: #1e1e2e;
+    border-radius: 10px;
+}
+
+.music-ctl-box {
+    padding: 10px;
+}
+
+.music-ctl-info {
+    background-color: rgba(30, 30, 46, 0.6);
+    border-radius: 6px;
+    padding: 4px;
+}
+
+.music-ctl-info-title {
+    font-size: larger;
+    font-weight: 800;
+}
+.music-ctl-info-artist {
+    font-size: smaller;
+    font-weight: 500;
+}
+
+/* End of Music Controller */

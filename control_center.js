@@ -1,51 +1,38 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import { exec } from 'resource:///com/github/Aylur/ags/utils.js';
-import { toTitle, Separator } from './utilities.js';
-import { CButton } from './lib/control_buttons.js';
+import { toTitle, Separator } from './misc.js';
+import { NetworkCtl } from './lib/network_ctl.js';
 
-// const greetingMsg = () => {
-//     return ["How are you today?", "Ready to watch ur notifications?", "Renember to do all your homework!"][Math.floor(Math.random() * 3)];
-// }
+const CButton = (icon, label, connect_func) => {
+    let toggledLabel = Widget.Label({
+        label: "",
+        useMarkup: true,
+    })
 
-// const USER = toTitle(exec('whoami').trim());
+    let btt = Widget.Button({
+        child: Widget.CenterBox({
+            centerWidget: Widget.Box({
+                spacing: 8,
+                children: [
+                    Widget.Icon({
+                        icon: icon,
+                        size: 16,
+                    }),
+                    Widget.Label({
+                        label: label,
+                        useMarkup: true,
+                    }),
+                    toggledLabel,
+                ]
+            }),
+        })
+    })
 
-// const Header = () => {
-//     let msg = greetingMsg()
-//     return Widget.CenterBox({
-//         className: 'ags-centerbox-header',
-//         vertical: false,
-//         spacing: 150 + msg.length,
-//         startWidget: 
-//             Widget.Box({
-//                 className: 'ags-header',
-//                 vexpand: true,
-//                 vertical: true,
-//                 children: 
-//                     [
-//                         Widget.Box({
-//                             children: [
-//                                 Widget.Label({
-//                                     label: `<span size="larger"><b>Hi ${USER}!</b></span>`,
-//                                     useMarkup: true,
-//                                     justification: "left",
-//                                     wrap: true,
-//                                 })
-//                             ]
-//                         }),
-//                         Widget.Label(
-//                             { maxWidthChars: 33, label: `<span size='smaller'>${msg}</span>`, useMarkup: true }
-//                         )
-//                     ],
-//             }),
-//         endWidget: Widget.Box({
-            
-//         }) 
-//         // Widget.Icon({
-//         //     icon: "user-available-symbolic",
-//         //     size: 32,
-//         // })
-//     })
-// }
+    if (connect_func) {
+        connect_func(toggledLabel)
+    }
+    return btt
+}
 
 const CButtonBox = (vertical, widgets) => {
     return Widget.Box({
@@ -67,7 +54,7 @@ const ControlButtons = () => {
         spacing: 8,
         children: [
             
-           CButtonBox(false, [CButton("network-wireless-symbolic", "Internet"),CButton("bluetooth-active-symbolic", "Bluetooth")]),
+           NetworkCtl(),CButton("bluetooth-active-symbolic", "Bluetooth"),
            CButtonBox(false, [CButton("audio-volume-high-symbolic", "Audio")]),
         ]
     })

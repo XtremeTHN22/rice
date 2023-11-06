@@ -34,3 +34,6 @@ class Config:
         for x in self.config[key]:
             self.logger.debug(f"Converting {x} to {obj}")
             yield obj(x)
+        
+    def watch_for_changes(self) -> None:
+        self.logger.info("Watcher for config file %s has been set", self.config_path)
