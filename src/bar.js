@@ -151,7 +151,7 @@ const RightWidgets = () => {
     })
 }
 
-export const Bar = () => {
+const BarContent = () => {
     return Widget.CenterBox({
         className: 'topbar-centerbox',
         homogeneous: true,
@@ -170,3 +170,19 @@ export const Bar = () => {
 
     })
 }
+
+export const Bar = () => Widget.Window({
+    name: 'topbar',
+    layer: 'top',
+    // @ts-ignore
+    margin: [5, 5, 5, 5],
+    anchor: ['top', 'left', 'right'],
+    exclusive: true,
+    class_name: 'topbar-window',
+    child: Widget.Box({
+        class_name: 'topbar-box',
+        children: [
+            BarContent()
+        ],
+    })
+})

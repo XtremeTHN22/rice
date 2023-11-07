@@ -1,2 +1,4 @@
 .venv
-reload/logs
+src/reload/logs
+node_modules
+types

@@ -19,4 +19,6 @@ export const Network = await service('network');
 export const Notifications = await service('notifications');
 export const SystemTray = await service('systemtray');
 
+globalThis['Notifications'] = Notifications
+
 const { exec } = Utils;

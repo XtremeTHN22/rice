@@ -2,14 +2,77 @@
 
 .control-center-window {
     background-color: #1e1e2e;
-    border-radius: 10px;    
+    border-radius: 10px;
 }
 
 .control-center-box {
     padding: 10px;
 }
 
+.control-center-button {
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.control-center-button.connected {
+    background-color: rgba(24, 113, 229, 0.3);
+}
+
+.network-ctl-connected {
+    font-size: smaller;
+}
+
+.network-ctl-button-label {
+    font-size: larger;
+    font-weight: 600;
+}
+
 /* End of Control Center */
+
+/* Notifications */
+
+.notification-box {
+    border-radius: 10px;
+}
+
+.notification-popup-box {
+    border-radius: 10px;
+    background-color: #1e1e2e;
+    padding: 10px;
+
+    /* margin: 10px; */
+}
+
+.notification-title {
+    font-size: larger;
+    font-weight: 600;
+}
+
+.notification-description-box {
+    min-height: 50px;
+}
+
+.notification-description-label {
+    font-size: smaller;
+}
+
+.notification-action-button {
+    border-radius: 30px;
+}
+
+/* Alias "NotificationList" */
+.control-center-box-center {
+    background-color: rgba(30, 30, 46, 0.6);
+    border: 2px solid rgba(24, 113, 229, 0.3);
+    border-radius: 10px;
+    padding: 10px
+}
+
+.notification-close-button {
+    background-color: transparent;
+}
+
+/* End of Notifications */
 
 /* Topbar */
 .topbar-window {
@@ -102,10 +165,11 @@
 
 .music-ctl-box {
     padding: 10px;
+    margin: 10px
 }
 
 .music-ctl-info {
-    background-color: rgba(30, 30, 46, 0.6);
+    /* background-color: rgba(30, 30, 46, 0.6); */
     border-radius: 6px;
     padding: 4px;
 }
@@ -113,10 +177,25 @@
 .music-ctl-info-title {
     font-size: larger;
     font-weight: 800;
+    padding-right: 80px;
 }
+
+.music-ctl-info-title.truncated {
+    font-size: x-large;
+}
+
 .music-ctl-info-artist {
     font-size: smaller;
     font-weight: 500;
+}
+
+.music-ctl-controller-button {
+    border-radius: 20px;
+    background-color: rgba(30, 30, 46, 0.3);
+}
+
+.music-ctl-position-slider {
+    border-radius: 0;
 }
 
 /* End of Music Controller */

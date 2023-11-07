@@ -6,7 +6,7 @@ export const toTitle = (str) => {
 }
 
 export const Separator = (...extra) => {
-    return Widget.Box({hexpand: true, ...extra})
+    return Widget.Box({...extra,hexpand: true, })
 }
 
 export const toggleWindow = (name) => {

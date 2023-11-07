@@ -23,14 +23,19 @@ class Watcher:
         self.logger.info("Initializing inotify.adapters.InotifyTree...")
         
         self.intfy = watcher.Inotify()
-        print(CONF_DIR)
-        default_paths = [os.path.join(CONF_DIR, 'config.js'), os.path.join(CONF_DIR, 'bar.js'), os.path.join(CONF_DIR, 'widgets.js'), os.path.join(CONF_DIR, 'styles', "style.css")]
-        
+
+        root_dir = os.path.dirname(CONF_DIR)
+        default_paths = [os.path.join(root_dir, 'config.js'), os.path.join(CONF_DIR, 'bar.js'), os.path.join(CONF_DIR, 'widgets.js'), os.path.join(CONF_DIR, 'styles', "style.css")]
+
         self.ags_class = AgsProcess()
-        self.add_watches(default_paths)
+        self.add_watches(default_paths, defaults=True)
         self.add_watches(FILES)
 
-    def add_watches(self, paths: list):
+    def add_watches(self, paths: list, defaults=False):
+        if defaults is True:
+            if os.path.exists(paths[0]) is False:
+                self.logger.error("Main file not found!")
+                self.logger.warning("Ignoring %s...", paths.pop(0))
         for x in paths:
             x = pathlib.Path(x)
             if x.exists() is False:

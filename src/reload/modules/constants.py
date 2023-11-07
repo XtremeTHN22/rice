@@ -3,7 +3,7 @@ import logging
 import pathlib
 import os
 
-CONF_DIR = pathlib.Path(os.path.expanduser('~'), '.config', 'ags') if (n:=os.getenv('CONF_DIR')) is None else n
+CONF_DIR = pathlib.Path(os.path.expanduser('~'), '.config', 'ags', 'src') if (n:=os.getenv('CONF_DIR')) is None else n
 RELOADER_CONFIG_PATH = pathlib.Path(os.path.join(CONF_DIR, "reload", 'reloader.json'))
 
 LOG_DIR = pathlib.Path(os.path.expanduser('~'), '.cache', 'reloader', 'logs') if (n:=os.getenv('LOG_DIR')) is None else n
